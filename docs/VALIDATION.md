@@ -41,3 +41,9 @@ The public preview installer SHA-256 digest matches the locally installed and in
 TypeScript/Vite production build and the three browser flows passed locally. Added coverage for returning from a project to the overview and reopening it, plus matching the live terminal background to the selected theme without losing its connection. The existing report, request approval, graph and 1280px checks still pass. Native WebView light and dark screenshots were inspected. Noto Sans SC rendering was verified through the platform-font inspector on this Windows machine; other machines use the declared local font fallback.
 
 NSIS 0.1.1 built successfully and was installed over 0.1.0 (installer exit code 0). This is a UI update; no new live-model completion or clean-machine validation is claimed.
+
+Release: https://github.com/0xMouise/cairn-workbench/releases/tag/v0.1.1-workbench-preview
+
+Installer SHA-256: `392e975f2da446835cd93cd1cd73b384190d20ae21be095b4d838ebff9ec053c`. GitHub's published asset digest matches this local package. Installed application version 0.1.1 and authenticated native renderer smoke passed; the QA debugging port was closed afterward.
+
+Remote UI-update CI: https://github.com/0xMouise/cairn-workbench/actions/runs/39897453048 (started; this record does not claim a completed remote result).
