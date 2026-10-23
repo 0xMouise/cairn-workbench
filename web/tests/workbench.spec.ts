@@ -164,6 +164,7 @@ test("manual project terminal runs only user-entered commands", async ({
   const socket = await socketPromise;
   let output = "";
   socket.on("framereceived", (frame) => (output += frame.payload.toString()));
+  await expect(page.getByText("终端已连接", { exact: true })).toBeVisible();
   await expect(page.locator(".xterm-helper-textarea")).toBeVisible();
   await page.locator(".xterm-helper-textarea").focus();
   await page.keyboard.type("printf CAIRN_; printf 'TERMINAL_OK\\n'");

@@ -4,9 +4,13 @@ import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 export default function ProjectTerminal({ projectId }: { projectId: string }) {
   const [open, setOpen] = useState(false);
+  const [connection, setConnection] = useState("connecting");
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open || !ref.current) return;
+    setConnection("connecting");
+    let queuedInput = "";
+    let inputOverflow = false;
     const terminal = new Terminal({
       fontFamily: "Cascadia Code,Consolas,monospace",
       fontSize: 12,
@@ -26,6 +30,7 @@ export default function ProjectTerminal({ projectId }: { projectId: string }) {
     );
     socket.binaryType = "arraybuffer";
     socket.onopen = () => {
+      setConnection("connected");
       socket.send(
         JSON.stringify({
           type: "resize",
@@ -33,16 +38,35 @@ export default function ProjectTerminal({ projectId }: { projectId: string }) {
           rows: terminal.rows,
         }),
       );
+      if (queuedInput) {
+        socket.send(JSON.stringify({ type: "data", data: queuedInput }));
+        queuedInput = "";
+      }
       terminal.focus();
     };
     socket.onmessage = (e) =>
       terminal.write(
         typeof e.data === "string" ? e.data : new Uint8Array(e.data),
       );
-    socket.onclose = () => terminal.writeln("\r\n[终端连接已关闭]");
+    socket.onclose = () => {
+      setConnection("closed");
+      queuedInput = "";
+      terminal.options.disableStdin = true;
+      terminal.writeln("\r\n[终端连接已关闭]");
+    };
     const input = terminal.onData((data) => {
       if (socket.readyState === 1)
         socket.send(JSON.stringify({ type: "data", data }));
+      else if (socket.readyState === 0 && !inputOverflow) {
+        if (queuedInput.length + data.length <= 16384) queuedInput += data;
+        else {
+          queuedInput = "";
+          inputOverflow = true;
+          terminal.writeln(
+            "\r\n[连接中输入过长，缓冲已清空，请连接就绪后重新输入]",
+          );
+        }
+      }
     });
     const observer = new ResizeObserver(() => {
       fit.fit();
@@ -59,6 +83,9 @@ export default function ProjectTerminal({ projectId }: { projectId: string }) {
     return () => {
       observer.disconnect();
       input.dispose();
+      socket.onopen = null;
+      socket.onmessage = null;
+      socket.onclose = null;
       socket.close();
       terminal.dispose();
     };
@@ -67,6 +94,15 @@ export default function ProjectTerminal({ projectId }: { projectId: string }) {
     <div className="terminal-view">
       <div className="view-toolbar">
         <span className="muted">手动终端 · 项目工作目录 · 当前用户权限</span>
+        {open && (
+          <span className="terminal-connection" role="status">
+            {connection === "connected"
+              ? "终端已连接"
+              : connection === "closed"
+                ? "连接已关闭"
+                : "正在连接终端…"}
+          </span>
+        )}
         {open && (
           <button className="button secondary" onClick={() => setOpen(false)}>
             <Square size={12} />

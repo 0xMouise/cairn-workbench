@@ -27,3 +27,5 @@ The actual installed OpenCode server was inspected and contacted. Free DeepSeek 
 The package is an unsigned preview. Clean Windows machine provisioning, code signing, cold-start performance, thousand-node graph benchmarks, and long-duration soak testing remain separate gates. Local installation/renderer verification does not establish those gates. The app does not advertise OS sandboxing, environment rollback, or remote action reversal.
 
 GitHub Actions is configured for Linux tests/browser checks and Windows preview builds. Remote CI status is visible in GitHub; local results above do not imply remote CI succeeded.
+
+The first remote Linux browser run exposed a terminal handshake/input race. The terminal now displays readiness, buffers input until the WebSocket opens, discards overflow without executing a partial buffered command, and removes socket callbacks on disposal. The browser check waits for the actual connected state before issuing its test command.

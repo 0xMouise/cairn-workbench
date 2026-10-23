@@ -7,3 +7,4 @@
 *.mjs text eol=lf
 *.md text eol=lf
 *.lock text eol=lf
+README.upstream.md -whitespace

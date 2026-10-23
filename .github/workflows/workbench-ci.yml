@@ -1,5 +1,8 @@
 name: Workbench checks
 on: [push, pull_request]
+concurrency:
+  group: workbench-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -32,6 +35,14 @@ jobs:
       - uses: actions/setup-node@v4
         with: {node-version: '24'}
       - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            web/src-tauri/target
+          key: ${{ runner.os }}-rust-${{ hashFiles('web/src-tauri/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-rust-
       - run: npm ci
         working-directory: web
       - run: npm run tauri build
