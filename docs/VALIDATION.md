@@ -29,3 +29,9 @@ The package is an unsigned preview. Clean Windows machine provisioning, code sig
 GitHub Actions is configured for Linux tests/browser checks and Windows preview builds. Remote CI status is visible in GitHub; local results above do not imply remote CI succeeded.
 
 The first remote Linux browser run exposed a terminal handshake/input race. The terminal now displays readiness, buffers input until the WebSocket opens, discards overflow without executing a partial buffered command, and removes socket callbacks on disposal. The browser check waits for the actual connected state before issuing its test command.
+
+## Remote release verification
+
+Commit `9c0a3f6` passed both Linux and Windows jobs: https://github.com/0xMouise/cairn-workbench/actions/runs/39895835323
+
+The public preview installer SHA-256 digest matches the locally installed and inspected package. Release: https://github.com/0xMouise/cairn-workbench/releases/tag/v0.1.0-workbench-preview
