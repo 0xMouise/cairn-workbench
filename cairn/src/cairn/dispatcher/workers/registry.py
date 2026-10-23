@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from cairn.dispatcher.workers.adapters import ClaudeCodeDriver, CodexDriver, MockDriver, PiDriver
 from cairn.dispatcher.workers.base import WorkerDriver
+from cairn.dispatcher.workers.adapters.opencode import OpenCodeDriver
 
 
 _CLAUDE = ClaudeCodeDriver()
@@ -17,6 +18,7 @@ DRIVERS: dict[str, WorkerDriver] = {
 # Local variants invoke the host CLIs in their native configuration (no cairn provider
 # injection). claudecode and mock build identical commands in both modes, so they are shared.
 LOCAL_DRIVERS: dict[str, WorkerDriver] = {
+    "opencode": OpenCodeDriver(),
     "claudecode": _CLAUDE,
     "codex": CodexDriver(local=True),
     "pi": PiDriver(local=True),

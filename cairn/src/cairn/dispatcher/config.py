@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 
 TaskType = Literal["reason", "explore", "bootstrap"]
-WorkerType = Literal["claudecode", "codex", "pi", "mock"]
+WorkerType = Literal["claudecode", "codex", "pi", "mock", "opencode"]
 CompletedAction = Literal["remove", "stop"]
 WorkerHealthcheckMode = Literal["startup_and_task", "startup_only", "disabled"]
 ExecutionMode = Literal["container", "local"]
@@ -259,6 +259,8 @@ class DispatchConfig(BaseModel):
     @model_validator(mode="after")
     def validate_execution_mode(self) -> "DispatchConfig":
         if self.runtime.execution == "container":
+            if any(worker.type == "opencode" for worker in self.workers):
+                raise ValueError("opencode workers require runtime.execution: local")
             if self.container is None:
                 raise ValueError("container config is required when runtime.execution is container")
             for worker in self.workers:

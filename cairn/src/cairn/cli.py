@@ -14,6 +14,15 @@ def main():
 
 
 @main.command()
+@click.option('--port', default=18100, show_default=True)
+@click.option('--data-dir', type=click.Path(path_type=Path), default=None)
+def workbench(port, data_dir):
+    """Start the authenticated local Workbench (independent from the original server)."""
+    from cairn.workbench.app import create_app
+    uvicorn.run(create_app(data_dir), host='127.0.0.1', port=port, access_log=False)
+
+
+@main.command()
 @click.option("--host", default="127.0.0.1", show_default=True, help="Bind host")
 @click.option("--port", default=8000, show_default=True, help="Bind port")
 @click.option(

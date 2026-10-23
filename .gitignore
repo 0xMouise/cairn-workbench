@@ -4,3 +4,18 @@ __pycache__/
 .playwright-cli/
 datas/
 dispatch.yaml
+
+# Workbench build outputs and private runtime state
+.runtime/
+.venv/
+node_modules/
+web/src-tauri/target/
+web/playwright-report/
+web/test-results/
+web/*.tsbuildinfo
+cairn/src/cairn/workbench/static/
+artifacts/
+web/src-tauri/resources/runtime.tar.gz
+test-results/
+playwright-report/
+web/src-tauri/gen/

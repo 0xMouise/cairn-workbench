@@ -1,0 +1,40 @@
+name: Workbench checks
+on: [push, pull_request]
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm, cache-dependency-path: web/package-lock.json}
+      - run: pip install -r cairn/requirements-workbench.lock && pip install --no-deps -e ./cairn && pip install pytest httpx
+      - run: pytest cairn/tests -q
+      - run: npm ci && npm run build
+        working-directory: web
+      - run: python scripts/package_runtime.py
+      - run: |
+          mkdir -p .runtime/dev-data
+          CAIRN_WORKBENCH_DATA="$PWD/.runtime/dev-data" python scripts/serve_workbench.py > .runtime/server.log 2>&1 &
+          python -c "import time,urllib.request; time.sleep(2); urllib.request.urlopen('http://127.0.0.1:18100/api/v2/health')"
+      - run: npx playwright install --with-deps chromium && npm run test:e2e
+        working-directory: web
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: {name: browser-failure, path: web/test-results}
+  windows-preview:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+        working-directory: web
+      - run: npm run tauri build
+        working-directory: web
+      - uses: actions/upload-artifact@v4
+        with: {name: windows-unsigned-preview, path: web/src-tauri/target/release/bundle/nsis/*}
