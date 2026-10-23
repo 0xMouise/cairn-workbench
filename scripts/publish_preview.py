@@ -4,6 +4,7 @@ Credentials stay in memory and are never written into Git remotes or log output.
 """
 
 import argparse
+import json
 from pathlib import Path
 import subprocess
 import time
@@ -78,7 +79,8 @@ def prepare(session):
 
 
 def release(session, repo, files):
-    tag = "v0.1.0-workbench-preview"
+    version = json.loads((ROOT / "web/package.json").read_text(encoding="utf8"))["version"]
+    tag = f"v{version}-workbench-preview"
     base = "https://api.github.com/repos/" + repo
     result = session.get(base + "/releases/tags/" + tag, timeout=20)
     if result.status_code == 404:
@@ -87,8 +89,8 @@ def release(session, repo, files):
             json={
                 "tag_name": tag,
                 "target_commitish": "workbench",
-                "name": "Cairn Workbench 0.1.0 Preview",
-                "body": (ROOT / "docs/RELEASE_NOTES_0.1.0.md").read_text(
+                "name": f"Cairn Workbench {version} Preview",
+                "body": (ROOT / f"docs/RELEASE_NOTES_{version}.md").read_text(
                     encoding="utf8"
                 ),
                 "prerelease": True,

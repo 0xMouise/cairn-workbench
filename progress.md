@@ -5,3 +5,5 @@
 Final local validation: 119 Linux tests, 3 Playwright flows, actual PTY, direct PDF export and visual PDF QA. NSIS installed successfully in LocalAppData/CairnWorkbench; native WebView authenticated and rendered. QA token rotated; debugging browser arguments removed; QA projects archived. Preview remains unsigned and live-model completion is not claimed.
 
 Published 0.1.0 preview to 0xMouise/cairn-workbench. Both remote CI jobs passed for 9c0a3f6. Final native installation and renderer smoke passed; release digest matched. Original deployment preserved.
+
+2026-10-23 UI refinement: replaced marketing welcome with project list and practical actions; unified Chinese typography; warm neutral light/dark palettes and restrained green accent. Graph and PTY colors now follow theme without reconnecting terminal. Three browser flows passed, including project overview navigation and theme change during connected terminal. Native light/dark screenshots reviewed; 0.1.1 NSIS build and local upgrade completed successfully.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Cairn Workbench",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "identifier": "io.cairn.workbench",
   "build": {
     "beforeBuildCommand": "npm run build && python ../scripts/package_runtime.py && node ../scripts/collect_licenses.mjs",
@@ -27,26 +27,18 @@
   },
   "bundle": {
     "active": true,
-    "targets": [
-      "nsis"
-    ],
+    "targets": ["nsis"],
     "resources": [
       "resources/runtime.tar.gz",
       "resources/THIRD_PARTY_LICENSES.txt"
     ],
-    "icon": [
-      "icons/icon.ico",
-      "icons/icon.png"
-    ],
+    "icon": ["icons/icon.ico", "icons/icon.png"],
     "shortDescription": "Local security research workbench",
     "category": "DeveloperTool",
     "windows": {
       "nsis": {
         "displayLanguageSelector": true,
-        "languages": [
-          "SimpChinese",
-          "English"
-        ]
+        "languages": ["SimpChinese", "English"]
       }
     }
   }

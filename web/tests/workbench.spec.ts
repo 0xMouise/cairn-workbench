@@ -118,6 +118,14 @@ test("project, evidence, finding, scope, report and themes", async ({
     fullPage: true,
   });
   expect(errors).toEqual([]);
+  await page.getByRole("button", { name: /^所有项目/ }).click();
+  await expect(page.locator(".home-heading h1")).toHaveText("项目");
+  await expect(page.locator(".home-project-row").first()).toBeVisible();
+  await expect(page.locator(".inspector")).not.toBeVisible();
+  await page.locator(".home-project-row").first().click();
+  await expect(
+    page.getByRole("button", { name: "活动", exact: true }),
+  ).toBeVisible();
 });
 test("keyboard command palette and empty settings", async ({ page }) => {
   await page.keyboard.press("Control+k");
@@ -170,6 +178,26 @@ test("manual project terminal runs only user-entered commands", async ({
   await page.keyboard.type("printf CAIRN_; printf 'TERMINAL_OK\\n'");
   await page.keyboard.press("Enter");
   await expect.poll(() => output).toContain("CAIRN_TERMINAL_OK");
+  await page.getByRole("button", { name: "切换主题" }).click();
+  await expect(page.getByText("终端已连接", { exact: true })).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .locator(".xterm-viewport")
+        .evaluate((el) => getComputedStyle(el).backgroundColor),
+    )
+    .toBe(
+      await page
+        .evaluate(() =>
+          getComputedStyle(document.documentElement)
+            .getPropertyValue("--bg")
+            .trim(),
+        )
+        .then((hex) => {
+          const n = parseInt(hex.slice(1), 16);
+          return `rgb(${n >> 16}, ${(n >> 8) & 255}, ${n & 255})`;
+        }),
+    );
   await page.getByRole("button", { name: "关闭终端", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "打开手动终端", exact: true }),

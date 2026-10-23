@@ -161,22 +161,8 @@ export function ActivityFeed({
       >
         {!visible.length && (
           <div className="feed-intro">
-            <div className="cairn-mark large">
-              <span />
-              <span />
-              <span />
-            </div>
             <h2>从一个清晰的目标开始</h2>
-            <p>
-              描述你的研究任务。Cairn 会记录探索路径，
-              <br />
-              在需要确认时停下来，并保留每一步的依据。
-            </p>
-            <div className="intro-tags">
-              <span>事实与意图</span>
-              <span>关键操作确认</span>
-              <span>证据可追溯</span>
-            </div>
+            <p>在下方输入本次任务，按 Ctrl + Enter 开始。</p>
           </div>
         )}
         <div style={{ height: virtual.getTotalSize(), position: "relative" }}>
@@ -409,6 +395,46 @@ export function Graph({
         graph.center();
       }
     };
+    const updateTheme = () => {
+      const css = getComputedStyle(document.documentElement);
+      const color = (name: string) => css.getPropertyValue(name).trim();
+      graph
+        .style()
+        .selector("node")
+        .style({
+          "background-color": color("--surface"),
+          "border-color": color("--muted"),
+          color: color("--text"),
+          "font-family": css.fontFamily,
+        })
+        .selector('node[kind="origin"]')
+        .style({ "border-color": color("--accent") })
+        .selector('node[kind="goal"]')
+        .style({ "border-color": color("--amber") })
+        .selector('node[kind="fact"]')
+        .style({ "border-color": color("--green") })
+        .selector('node[kind="intent"]')
+        .style({ "border-color": color("--muted") })
+        .selector('node[kind="complete"]')
+        .style({
+          "background-color": color("--accent-bg"),
+          "border-color": color("--green"),
+        })
+        .selector("edge")
+        .style({
+          "line-color": color("--muted"),
+          "target-arrow-color": color("--muted"),
+        })
+        .selector(":selected")
+        .style({ "border-color": color("--accent") })
+        .update();
+    };
+    updateTheme();
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
     const resize = new ResizeObserver(fit);
     resize.observe(container.current);
     fit();
@@ -426,6 +452,7 @@ export function Graph({
       if (e.target === graph) graph.elements().removeClass("faded");
     });
     return () => {
+      themeObserver.disconnect();
       resize.disconnect();
       graph.destroy();
       cy.current = null;

@@ -2,9 +2,11 @@
 
 中文优先的本地安全研究工作台。基于 Cairn 的事实／意图／提示模型，增加 Windows 桌面端、实时活动流、逐次审批、证据与发现管理。
 
-[下载 Windows 预览版](https://github.com/0xMouise/cairn-workbench/releases/tag/v0.1.0-workbench-preview) · [验证记录](docs/VALIDATION.md) · [架构与边界](docs/WORKBENCH_ARCHITECTURE.md)
+[下载 Windows 预览版](https://github.com/0xMouise/cairn-workbench/releases/tag/v0.1.1-workbench-preview) · [验证记录](docs/VALIDATION.md) · [架构与边界](docs/WORKBENCH_ARCHITECTURE.md)
 
 ![已安装桌面端实际截图](docs/images/workbench-desktop.png)
+
+[浅色界面](docs/images/workbench-light.png) · [深色界面](docs/images/workbench-dark.png) · [0.1.1 界面更新](docs/RELEASE_NOTES_0.1.1.md)
 
 ## 主要功能
 

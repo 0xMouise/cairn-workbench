@@ -525,7 +525,7 @@ function App() {
       className={
         "app " +
         (!leftOpen ? "left-hidden " : "") +
-        (!rightOpen ? "right-hidden" : "")
+        (!rightOpen || !project ? "right-hidden" : "")
       }
       style={
         {
@@ -543,7 +543,7 @@ function App() {
           </div>
           <div>
             <strong>Cairn</strong>
-            <span>WORKBENCH</span>
+            <span>研究工作台</span>
           </div>
           <button
             className="icon-button"
@@ -569,7 +569,10 @@ function App() {
         <nav className="primary-nav">
           <button
             className={filter === "all" ? "selected" : ""}
-            onClick={() => setFilter("all")}
+            onClick={() => {
+              setFilter("all");
+              choose("");
+            }}
           >
             <Folder size={16} />
             所有项目
@@ -579,7 +582,10 @@ function App() {
           </button>
           <button
             className={filter === "running" ? "selected" : ""}
-            onClick={() => setFilter("running")}
+            onClick={() => {
+              setFilter("running");
+              choose("");
+            }}
           >
             <Activity size={16} />
             运行中
@@ -596,7 +602,10 @@ function App() {
           </button>
           <button
             className={filter === "archived" ? "selected" : ""}
-            onClick={() => setFilter("archived")}
+            onClick={() => {
+              setFilter("archived");
+              choose("");
+            }}
           >
             <Archive size={16} />
             已归档
@@ -655,7 +664,7 @@ function App() {
               <b>本地工作台</b>
               <small>{connected ? "事件流已连接" : "事件流重连中"}</small>
             </div>
-            <span className="local-pill">LOCAL</span>
+            <span className="local-pill">本机</span>
           </div>
           <div className="sidebar-actions">
             <button
@@ -701,18 +710,25 @@ function App() {
           <div className="top-actions">
             <span className="engine-badge">
               <span className="live-dot" />
-              DeepSeek · Free
+              DeepSeek · 免费
             </span>
             <button
               className="icon-button"
               title="切换主题"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() =>
+                setTheme(
+                  document.documentElement.dataset.theme === "dark"
+                    ? "light"
+                    : "dark",
+                )
+              }
             >
               {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
             <button
               className="icon-button"
               title="切换详情栏"
+              disabled={!project}
               onClick={() => {
                 setRightOpen(!rightOpen);
                 localStorage.setItem("cairn.inspector", String(!rightOpen));
@@ -728,63 +744,108 @@ function App() {
         </header>
         {!project ? (
           <div className="welcome">
-            <div className="eyebrow">
-              <span className="live-dot" /> YOUR RESEARCH, CONNECTED
+            <div className="home-heading">
+              <div>
+                <h1>
+                  {filter === "archived"
+                    ? "已归档项目"
+                    : filter === "running"
+                      ? "运行中的项目"
+                      : "项目"}
+                </h1>
+                <p>管理目标、查看进展，继续上次的工作。</p>
+              </div>
+              <button
+                className="button primary"
+                onClick={() => setDialog("project")}
+              >
+                <Plus size={15} />
+                新建项目
+              </button>
             </div>
-            <h1>
-              让每一次探索，
-              <br />
-              <span>都有迹可循。</span>
-            </h1>
-            <p>
-              从目标出发，连接事实与意图。
-              <br />
-              在一个安静、可控的工作台里，完成你的安全研究。
-            </p>
-            <button
-              className="button primary"
-              onClick={() => setDialog("project")}
-            >
-              <Plus size={17} />
-              创建第一个研究项目
-            </button>
-            <div className="welcome-cards">
-              {[
-                [
-                  GitBranch,
-                  "保留探索路径",
-                  "事实、意图与提示，组成可回顾的研究图谱。",
-                ],
-                [
-                  ShieldCheck,
-                  "执行始终可控",
-                  "真实操作在需要时等待确认，你可以随时介入。",
-                ],
-                [
-                  FileSearch,
-                  "让结论有依据",
-                  "将请求、日志和产物，整理为可复核的证据。",
-                ],
-              ].map(([Icon, title, text]: any) => (
-                <div key={title}>
-                  <Icon size={21} />
-                  <h3>{title}</h3>
-                  <p>{text}</p>
+            <div className="home-projects">
+              <div className="home-list-heading">
+                <span>项目名称</span>
+                <span>{projectList.length} 个项目</span>
+              </div>
+              {projectList.length ? (
+                projectList.map((p: Row) => {
+                  const latest = overview.runs.find(
+                    (r: Row) => r.project_id === p.id,
+                  );
+                  return (
+                    <button
+                      className="home-project-row"
+                      key={p.id}
+                      onClick={() => choose(p.id)}
+                    >
+                      <Folder size={18} />
+                      <span className="home-project-info">
+                        <strong>{p.title}</strong>
+                        <small>{p.goal || "尚未填写研究目标"}</small>
+                      </span>
+                      <span className="home-project-status">
+                        {latest ? statuses[latest.status] : "未开始"}
+                      </span>
+                      <ChevronRight size={15} />
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="home-empty">
+                  <FolderOpen size={28} strokeWidth={1.3} />
+                  <h2>
+                    {filter === "all"
+                      ? "还没有项目"
+                      : filter === "archived"
+                        ? "没有已归档的项目"
+                        : "当前没有运行中的项目"}
+                  </h2>
+                  <p>
+                    {filter === "all"
+                      ? "为一个研究目标创建项目，请求、证据和结论会保存在一起。"
+                      : "可以从侧栏选择其他项目，或创建一个新项目。"}
+                  </p>
+                  {filter === "all" && (
+                    <button
+                      className="button secondary"
+                      onClick={() => setDialog("project")}
+                    >
+                      <Plus size={14} />
+                      创建项目
+                    </button>
+                  )}
                 </div>
-              ))}
+              )}
             </div>
-            <div className="welcome-note">
+            <div className="home-tools">
+              <button onClick={() => setDialog("search")}>
+                <Search size={16} />
+                <span>搜索项目与命令</span>
+                <kbd>Ctrl K</kbd>
+              </button>
+              <button
+                onClick={async () => {
+                  setDialog("settings");
+                  setDiagnostics(await api("/diagnostics"));
+                }}
+              >
+                <Settings size={16} />
+                <span>模型与工作台设置</span>
+                <ChevronRight size={14} />
+              </button>
+            </div>
+            <p className="home-footnote">
               <Folder size={13} />
-              本地存储<span>·</span>中文优先<span>·</span>项目独立工作目录
-            </div>
+              项目与研究记录保存在本机
+            </p>
           </div>
         ) : (
           <>
             <div className="project-heading">
               <div>
                 <div className="eyebrow">
-                  RESEARCH WORKSPACE <span> / </span>{" "}
-                  {selected.slice(-6).toUpperCase()}
+                  项目 <span> / </span> {selected.slice(-6).toUpperCase()}
                 </div>
                 <h1>{project.title}</h1>
                 <p>{project.goal}</p>
@@ -1158,7 +1219,7 @@ function App() {
             {activeRun
               ? `${statuses[activeRun.status]} · ${Math.max(0, Math.floor((elapsed - new Date(activeRun.created_at).getTime()) / 60000))} 分钟`
               : "所有记录保存在本机"}
-            <span>·</span>v0.1.0-preview
+            <span>·</span>v0.1.1-preview
           </span>
         </footer>
       </main>

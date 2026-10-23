@@ -21,6 +21,21 @@ export default function ProjectTerminal({ projectId }: { projectId: string }) {
     const fit = new FitAddon();
     terminal.loadAddon(fit);
     terminal.open(ref.current);
+    const updateTheme = () => {
+      const css = getComputedStyle(document.documentElement);
+      terminal.options.theme = {
+        background: css.getPropertyValue("--bg").trim(),
+        foreground: css.getPropertyValue("--text").trim(),
+        cursor: css.getPropertyValue("--accent").trim(),
+        selectionBackground: css.getPropertyValue("--hover").trim(),
+      };
+    };
+    updateTheme();
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
     fit.fit();
     terminal.writeln(
       "Cairn · 手动项目终端。你输入的命令会以当前用户权限执行。",
@@ -81,6 +96,7 @@ export default function ProjectTerminal({ projectId }: { projectId: string }) {
     });
     observer.observe(ref.current);
     return () => {
+      themeObserver.disconnect();
       observer.disconnect();
       input.dispose();
       socket.onopen = null;

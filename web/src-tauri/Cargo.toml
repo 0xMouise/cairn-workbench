@@ -1,6 +1,6 @@
 [package]
 name = "cairn-workbench"
-version = "0.1.0"
+version = "0.1.1"
 description = "Cairn local security research workbench"
 edition = "2021"
 license = "AGPL-3.0-only"

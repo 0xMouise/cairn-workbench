@@ -11,3 +11,6 @@ Implement the accepted Windows + WSL, Chinese-first open-source security workben
 
 ## Completion gates
 Production API integration exercised independently from simulated CI fixtures. Existing tests pass. Approval reject cannot execute. No secret in reports/logs. UI visually reviewed. Build artifacts identified honestly. External model quota and signing availability are separate release dependencies.
+
+## 0.1.1 visual refinement
+Typography, neutral palettes, project overview, compact empty states, graph/terminal theme integration implemented. Browser checks and native visual review passed; 0.1.1 NSIS built and installed; GitHub update being published.

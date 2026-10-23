@@ -1,18 +1,20 @@
 @import "@xterm/xterm/css/xterm.css";
 :root {
-  font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", sans-serif;
+  font-family:
+    "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI",
+    sans-serif;
   font-synthesis: none;
   color-scheme: light;
-  --bg: #f7f7f8;
+  --bg: #faf9f6;
   --surface: #fff;
-  --sidebar: #f0f0f2;
-  --subtle: #f5f5f6;
-  --hover: #ebebee;
-  --text: #202124;
-  --muted: #7b7d84;
-  --border: #e5e5e8;
-  --accent: #466bc7;
-  --accent-bg: #edf1fb;
+  --sidebar: #efeee9;
+  --subtle: #f3f2ed;
+  --hover: #e6e5de;
+  --text: #292b27;
+  --muted: #71746c;
+  --border: #e2e2da;
+  --accent: #526c52;
+  --accent-bg: #eaf0e6;
   --green: #3f8167;
   --amber: #9b712f;
   --red: #b64646;
@@ -21,16 +23,16 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #171819;
-  --surface: #1c1d1f;
-  --sidebar: #141516;
-  --subtle: #222326;
-  --hover: #2a2c2f;
-  --text: #e8e9eb;
-  --muted: #8d9097;
-  --border: #2b2d31;
-  --accent: #8daaf6;
-  --accent-bg: #252f45;
+  --bg: #20211e;
+  --surface: #252622;
+  --sidebar: #1b1c19;
+  --subtle: #2a2c27;
+  --hover: #33352e;
+  --text: #e5e6df;
+  --muted: #a0a397;
+  --border: #383a32;
+  --accent: #b3c6a3;
+  --accent-bg: #303b2a;
   --green: #80b9a1;
   --amber: #d1ac71;
   --red: #df9393;
@@ -208,17 +210,17 @@ svg {
   padding: 0 9px 24px;
 }
 .brand strong {
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: -0.8px;
   font-size: 21px;
   line-height: 1.1;
   display: block;
 }
 .brand span:not(.cairn-mark span) {
-  letter-spacing: 2.2px;
-  font-size: 8px;
+  letter-spacing: 0;
+  font-size: 10px;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 400;
 }
 .brand > .icon-button {
   margin-left: auto;
@@ -282,7 +284,7 @@ svg {
   border: 1px solid var(--border);
   box-shadow: 0 1px 2px #00000004;
   border-radius: 8px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .new-project > span {
   margin-left: auto;
@@ -371,7 +373,7 @@ kbd {
 }
 .project-item b {
   font-size: 12px;
-  font-weight: 550;
+  font-weight: 500;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -542,7 +544,7 @@ kbd {
   border-radius: 7px;
   padding: 8px 13px;
   font-size: 11px;
-  font-weight: 550;
+  font-weight: 500;
   white-space: nowrap;
   min-height: 34px;
   transition:
@@ -577,7 +579,7 @@ kbd {
 }
 .eyebrow {
   font-size: 9px;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.2px;
   font-weight: 600;
   color: var(--muted);
   display: flex;
@@ -597,9 +599,9 @@ kbd {
   flex-shrink: 0;
 }
 .project-heading h1 {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.7px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0;
   margin: 8px 0 7px;
   line-height: 1.4;
 }
@@ -910,9 +912,9 @@ kbd {
   opacity: 0.65;
 }
 .feed-intro h2 {
-  font-size: 21px;
-  letter-spacing: -0.5px;
-  font-weight: 550;
+  font-size: 17px;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 .feed-intro p {
   color: var(--muted);
@@ -1065,7 +1067,7 @@ kbd {
   justify-content: space-between;
   padding: 0 20px;
   font-size: 11px;
-  font-weight: 550;
+  font-weight: 500;
   border-bottom: 1px solid var(--border);
 }
 .inspector-body {
@@ -1076,7 +1078,7 @@ kbd {
 }
 .inspector-body h2 {
   font-size: 17px;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.6;
   margin: 8px 0;
 }
@@ -1087,7 +1089,7 @@ kbd {
 }
 .inspector-body h4 {
   font-size: 10px;
-  font-weight: 550;
+  font-weight: 500;
   color: var(--muted);
   margin: 20px 0 8px;
   display: flex;
@@ -1185,60 +1187,123 @@ dd {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 70px clamp(28px, 7vw, 100px) 30px;
+  padding: 42px clamp(28px, 5vw, 76px) 32px;
 }
-.welcome > .eyebrow {
-  font-size: 8px;
-  letter-spacing: 2px;
-  margin-bottom: 25px;
+.home-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
 }
-.welcome h1 {
-  font-size: clamp(30px, 3.3vw, 47px);
-  line-height: 1.55;
-  letter-spacing: -1.8px;
-  font-weight: 550;
+.home-heading h1 {
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
 }
-.welcome h1 span {
+.home-heading p {
+  font-size: 13px;
   color: var(--muted);
+  margin-top: 8px;
 }
-.welcome > p {
-  color: var(--muted);
-  line-height: 2;
-  font-size: 12px;
-  margin: 20px 0 25px;
-}
-.welcome > .button {
-  font-size: 12px;
-  padding: 10px 15px;
-}
-.welcome-cards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 25px;
+.home-projects {
   border-top: 1px solid var(--border);
-  margin-top: 50px;
-  padding-top: 25px;
+  border-bottom: 1px solid var(--border);
 }
-.welcome-cards svg {
+.home-list-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  font-size: 11px;
   color: var(--muted);
 }
-.welcome-cards h3 {
+.home-empty {
+  padding: 64px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.home-empty > svg {
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.home-empty h2 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.home-empty p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 350px;
+  margin: 10px 0 22px;
+}
+.home-project-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  padding: 19px 12px;
+  border-top: 1px solid var(--border);
+}
+.home-project-row:hover {
+  background: var(--subtle);
+}
+.home-project-row > svg {
+  color: var(--muted);
+}
+.home-project-info {
+  flex: 1;
+  min-width: 0;
+}
+.home-project-info strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+.home-project-info small {
+  display: block;
+  color: var(--muted);
   font-size: 12px;
-  font-weight: 550;
-  margin: 11px 0 8px;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.welcome-cards p {
-  font-size: 10px;
+.home-project-status {
+  font-size: 11px;
   color: var(--muted);
-  line-height: 1.9;
+  white-space: nowrap;
 }
-.welcome-note {
-  font-size: 9px;
-  color: var(--muted);
+.home-tools {
+  display: flex;
+  gap: 28px;
+  padding: 23px 0;
+}
+.home-tools button {
   display: flex;
   align-items: center;
   gap: 9px;
-  margin-top: 32px;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 5px 0;
+}
+.home-tools button:hover {
+  color: var(--text);
+}
+.home-tools kbd {
+  margin-left: 10px;
+}
+.home-footnote {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 36px;
 }
 .collection {
   padding: 25px 30px;
@@ -1254,7 +1319,7 @@ dd {
 }
 .collection-heading h2 {
   font-size: 16px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .collection-heading p {
   font-size: 10px;
@@ -1286,7 +1351,7 @@ dd {
 }
 .empty h3 {
   font-size: 16px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .empty p {
   font-size: 11px;
@@ -1319,7 +1384,7 @@ dd {
 }
 .finding-card h3 {
   font-size: 12px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .finding-card p {
   font-size: 10px;
@@ -1421,7 +1486,7 @@ dd {
   font-size: 12px;
   overflow-wrap: anywhere;
   margin: 15px 0 7px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .artifact-card p {
   font-size: 10px;
@@ -1641,7 +1706,7 @@ dd {
 }
 .settings-section h3 {
   font-size: 12px;
-  font-weight: 550;
+  font-weight: 500;
   margin-bottom: 13px;
 }
 .theme-options {
@@ -1724,7 +1789,7 @@ dd {
 }
 .help-steps h3 {
   font-size: 12px;
-  font-weight: 550;
+  font-weight: 500;
 }
 .help-steps p {
   font-size: 11px;
@@ -1836,7 +1901,7 @@ dd {
   flex: 1;
   min-height: 160px;
   padding: 15px;
-  background: #171819;
+  background: #20211e;
 }
 .identity-list > div {
   display: flex;
@@ -1951,12 +2016,12 @@ dd {
   .welcome {
     padding: 45px 25px 25px;
   }
-  .welcome-cards {
-    gap: 15px;
-    margin-top: 35px;
+  .home-tools {
+    flex-wrap: wrap;
+    gap: 10px 24px;
   }
-  .welcome h1 {
-    font-size: 32px;
+  .home-project-status {
+    display: none;
   }
   .collection {
     padding: 20px;
@@ -2032,4 +2097,82 @@ dd {
   font-size: 10px;
   line-height: 1.9;
   margin: 10px 0;
+}
+
+/* Calm, readable desktop typography; avoid synthesized Chinese semibold. */
+body {
+  font-size: 13px;
+  line-height: 1.65;
+}
+.brand {
+  padding-bottom: 24px;
+}
+.brand strong {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+.brand span:not(.cairn-mark span) {
+  display: block;
+  margin-top: 4px;
+}
+.primary-nav button {
+  color: var(--muted);
+}
+.primary-nav button.selected {
+  color: var(--text);
+  background: var(--hover);
+}
+.sidebar-section-label,
+.sidebar-empty,
+.project-item small,
+.environment-card small,
+.sidebar-actions > button:first-child {
+  font-size: 12px;
+}
+.breadcrumbs,
+.engine-badge,
+.inspector-title {
+  font-size: 12px;
+}
+.topbar {
+  height: 56px;
+}
+.project-heading p,
+.collection-heading p {
+  font-size: 12px;
+}
+.statusbar,
+.composer-note {
+  font-size: 11px;
+}
+.button,
+.new-project {
+  font-weight: 400;
+  border-radius: 6px;
+}
+.button.primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+.composer-box {
+  box-shadow: none;
+  border-radius: 10px;
+}
+.composer-box textarea,
+.prose {
+  font-size: 14px;
+  line-height: 1.85;
+}
+.eyebrow,
+.section-eyebrow {
+  font-weight: 400;
+  font-size: 11px;
+}
+.workspace-tabs button.active {
+  color: var(--text);
+}
+.inspector-body h3 {
+  font-weight: 500;
 }
